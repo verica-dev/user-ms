@@ -1,0 +1,22 @@
+{
+    "name": "user-ms",
+    "description": "Microservice used to manipulate with user object",
+    "version": "0.0.1",
+    "author": {
+        "name": "Verica Milanovic",
+        "email": "verica.milanovic.dev@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/verica-dev/user-ms.git"
+    },
+    "main": "index.js",
+    "bugs": {
+        "url": "https://github.com/verica-dev/user-ms/issues",
+        "email": "verica.milanovic.dev@gmail.com"
+    },
+    "homepage": "https://github.com/verica-dev/user-ms",
+    "dependencies": {
+        "http": "^1.0.0"
+    }
+}
