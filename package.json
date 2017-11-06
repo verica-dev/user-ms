@@ -17,7 +17,8 @@
     },
     "homepage": "https://github.com/verica-dev/user-ms",
     "dependencies": {
-        "http": "*"
+        "http": "*",
+        "mongodb": "^2.2.33"
     },
     "license": "MIT"
 }
