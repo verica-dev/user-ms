@@ -59,3 +59,11 @@ exports.addUser = (user) => __awaiter(this, void 0, void 0, function* () {
         return response_msg;
     });
 });
+exports.removeUser = (user_id) => __awaiter(this, void 0, void 0, function* () {
+    const db = mongoClient.connect(dbUrl);
+    return db.then((dbConnection) => {
+        const usr = dbConnection.collection(collectionName).deleteOne({ user_id: user_id });
+        dbConnection.close();
+        return usr;
+    });
+});

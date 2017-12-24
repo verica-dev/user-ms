@@ -1,4 +1,4 @@
-import { getUser, getAllUsers, addUser } from "./../repository/repository";
+import { getUser, getAllUsers, addUser, removeUser } from "./../repository/repository";
 const express = require("express");
 const { check, validationResult } = require('express-validator/check');
 
@@ -43,4 +43,14 @@ routes.post('/add', [
         res.send(response_msg);
         res.end();
     });
-})
+});
+
+routes.delete('/:userId', (req: any, res: any) => {
+    removeUser(req.params.userId).then(() => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        console.log(`user with user_id: ${req.params.userId} deleted!`);
+        res.end();
+    });
+});
+

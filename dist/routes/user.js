@@ -42,3 +42,11 @@ exports.routes.post('/add', [
         res.end();
     });
 });
+exports.routes.delete('/:userId', (req, res) => {
+    repository_1.removeUser(req.params.userId).then(() => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        console.log(`user with user_id: ${req.params.userId} deleted!`);
+        res.end();
+    });
+});

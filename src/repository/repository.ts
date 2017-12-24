@@ -57,3 +57,13 @@ export const addUser = async (user: User) => {
         return response_msg;
     });
 }
+
+export const removeUser = async (user_id: string) => {
+    const db = mongoClient.connect(dbUrl);
+
+    return db.then((dbConnection: any): User => {
+        const usr = dbConnection.collection(collectionName).deleteOne({ user_id: user_id });
+        dbConnection.close();
+        return usr;
+    });
+}
