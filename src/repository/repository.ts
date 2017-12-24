@@ -4,14 +4,22 @@ const mongoClient = new MongoClient();
 const dbUrl = "mongodb://localhost:27017/hairstudio";
 const collectionName = 'user';
 
-var user: Object;
+export class User {
+    constructor(
+        public user_id: string,
+        public first_name: string,
+        public last_name: string,
+        public email: string,
+        public phone: string
+    ) { }
+}
+
+var user: User;
 
 export const getUser = async (user_id: string) => {
     const db = mongoClient.connect(dbUrl);
 
-    return db.then((dbConnection: any): Object => {
-        console.log('dbConnection : ' + dbConnection);
-        console.log('user_id : ' + user_id);
+    return db.then((dbConnection: any): User => {
         const usr = dbConnection.collection(collectionName).findOne({ user_id: user_id });
         dbConnection.close();
         return usr;
@@ -21,31 +29,20 @@ export const getUser = async (user_id: string) => {
 export const getAllUsers = async () => {
     const db = mongoClient.connect(dbUrl);
 
-    return db.then((dbConnection: any): Object => {
-        console.log('dbConnection : ' + dbConnection);
+    return db.then((dbConnection: any): User[] => {
         const users = dbConnection.collection(collectionName).find({}).toArray();
         dbConnection.close();
         return users;
     });
 }
 
-class User {
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-}
-
 export const addUser = async (user: User) => {
     const db = mongoClient.connect(dbUrl);
 
     return db.then((dbConnection: any): string => {
-        console.log('dbConnection : ' + dbConnection);
-        
         const collection = dbConnection.collection(collectionName);
         const db_user = collection.findOne({ "user_id": user.user_id });
-        
+
         const response_msg: string = db_user.then((usr: User): string => {
             let msg: string;
             if (usr == undefined) {
