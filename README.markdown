@@ -19,7 +19,7 @@
 
 ```markdown
 # POST
-`<base_url>/user/`
+`<base_url>/user/add`
 
 `{
     "user_id" : string,     - mandatory
@@ -36,4 +36,20 @@
 ```markdown
 # DELETE
 `<base_url>/user/:userId`
+```
+
+### Edit user
+
+```markdown
+# POST
+`<base_url>/user/edit`
+
+`{
+    "user_id" : string,     - mandatory
+    "first_name" : string,  
+    "last_name" : string,   
+    "email" : string,
+    "phone" : string     
+ }`
+
 ```
