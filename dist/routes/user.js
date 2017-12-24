@@ -50,3 +50,27 @@ exports.routes.delete('/:userId', (req, res) => {
         res.end();
     });
 });
+exports.routes.post('/edit', [
+    check('user_id').exists(),
+    check('email').optional().isEmail().withMessage('must be an email address'),
+    check('phone').optional().isLength({ min: 8, max: 15 })
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(JSON.stringify({ errors: errors.mapped() }));
+        return res.status(400).json({ errors: errors.mapped() });
+    }
+    repository_1.editUser(req.body).then((response_msg) => {
+        console.log(response_msg);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(response_msg);
+        res.end();
+    }, (err) => {
+        console.log(err.message);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(err.message);
+        res.end();
+    });
+});

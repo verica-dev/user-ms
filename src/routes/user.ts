@@ -1,4 +1,4 @@
-import { getUser, getAllUsers, addUser, removeUser } from "./../repository/repository";
+import { getUser, getAllUsers, addUser, removeUser, editUser } from "./../repository/repository";
 const express = require("express");
 const { check, validationResult } = require('express-validator/check');
 
@@ -54,3 +54,27 @@ routes.delete('/:userId', (req: any, res: any) => {
     });
 });
 
+routes.post('/edit', [
+    check('user_id').exists(),
+    check('email').optional().isEmail().withMessage('must be an email address'),
+    check('phone').optional().isLength({ min: 8, max: 15 })
+], (req: any, res: any) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(JSON.stringify({ errors: errors.mapped() }));
+        return res.status(400).json({ errors: errors.mapped() });
+    }
+    editUser(req.body).then((response_msg: string) => {
+        console.log(response_msg);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(response_msg);
+        res.end();
+    }, (err : Error) => {
+        console.log(err.message);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(err.message);
+        res.end();
+    });
+});

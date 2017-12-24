@@ -67,3 +67,30 @@ export const removeUser = async (user_id: string) => {
         return usr;
     });
 }
+
+export const editUser = async (user: User) => {
+    const db = mongoClient.connect(dbUrl);
+
+    return db.then((dbConnection: any): string => {
+        const collection = dbConnection.collection(collectionName);
+        const db_user = collection.findOne({ "user_id": user.user_id });
+        const response_msg: string = db_user.then((usr: User): string => {
+            let msg: string;
+            if (usr == undefined || usr == null) {
+                msg = `There is no such a user with user_id : ${user.user_id}`;
+                dbConnection.close();
+                throw (new Error(msg));
+            } else {
+                msg = 'Updated user: \n'
+                    + JSON.stringify(usr)
+                    + '\nwith following data: \n'
+                    + JSON.stringify(user);
+                collection.updateOne({ "user_id": user.user_id }, { "$set": user }, { "upsert": true });
+
+                dbConnection.close();
+                return msg;
+            }
+        });
+        return response_msg;
+    });
+}
